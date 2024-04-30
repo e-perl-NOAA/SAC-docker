@@ -1,4 +1,4 @@
-# Install R packages for hake assessment docker image
+# Install R packages
 
 install.packages(c("remotes","purrr"))
 library(remotes)
