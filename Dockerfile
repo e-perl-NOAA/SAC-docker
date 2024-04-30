@@ -48,7 +48,6 @@ RUN R -e "install.packages('here'); \
           
 RUN rm install_r_packages.R
 
-ENV SS3_TEST_MODELS=$HOME/github/nmfs-ost/ss3-test-models
 RUN mkdir -p $SS3_TEST_MODELS
 
 COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
