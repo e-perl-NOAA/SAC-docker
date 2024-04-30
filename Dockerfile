@@ -48,12 +48,13 @@ RUN R -e "install.packages('here'); \
           
 RUN rm install_r_packages.R
 
-RUN mkdir -p $SS3_TEST_MODELS
+ENV SAC_HOME=$HOME/SAC-tool
+RUN git clone --branch master https://github.com/shcaba/SS-DL-tool
 
 COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
 RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 
-WORKDIR $SS3_TEST_MODELS
+WORKDIR $SAC_HOME
 
 # You will need to run the following in docker
 
@@ -74,7 +75,7 @@ WORKDIR $SS3_TEST_MODELS
 #   --rm \
 #   -p 8787:8787 \
 #   -e PASSWORD=a \
-#   --mount type=bind,source=$HOME/Documents/github_repos/ss3-test-models,target=/home/rstudio/github/ss3-test-models \
+#   --mount type=bind,source=$HOME/Documents/github_repos/ss3-test-models,target=/home/rstudio/SAC-tool \
 #   --mount type=bind,source=$HOME/.gitconfig,target=/home/rstudio/.gitconfig \
 #   egugliotti/build-admb-ss3-docker:main
 
