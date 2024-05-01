@@ -49,7 +49,8 @@ RUN R -e "install.packages('here'); \
 RUN rm install_r_packages.R
 
 ENV SAC_HOME=$HOME/SAC-tool
-RUN git clone --branch master https://github.com/shcaba/SS-DL-tool
+RUN mkdir -p $SAC_HOME
+RUN git clone --branch master https://github.com/shcaba/SS-DL-tool SAC_HOME
 
 COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
 RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
