@@ -51,8 +51,12 @@ RUN rm install_r_packages.R
 COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
 RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 
-# ENV SAC_HOME=$HOME/SAC-tool
-# RUN mkdir -p $SAC_HOME
+# Configure shiny server for bookmarks
+RUN sudo mkdir -p /var/shinylogs/shiny-server && \
+    mkdir -p /var/lib/shiny-server/bookmarks && \
+    chown shiny:shiny /var/shinylogs/shiny-server/ && \
+    chown shiny:shiny /var/lib/shiny-server/bookmarks/
+    
 RUN cd /home/rstudio \
     && git clone --branch master https://github.com/shcaba/SS-DL-tool
 
