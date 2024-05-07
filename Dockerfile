@@ -51,9 +51,9 @@ RUN rm install_r_packages.R
 COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
 RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 
-ENV SAC_HOME=$HOME/SAC-tool
-RUN mkdir -p $SAC_HOME
-RUN cd $SAC_HOME \
+# ENV SAC_HOME=$HOME/SAC-tool
+# RUN mkdir -p $SAC_HOME
+RUN cd /home/rstudio \
     && git clone --branch master https://github.com/shcaba/SS-DL-tool
 
 # You will need to run the following in docker
