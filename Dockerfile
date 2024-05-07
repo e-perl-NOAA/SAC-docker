@@ -62,6 +62,8 @@ RUN mkdir -p /var/lib/shiny-server/bookmarks/
     
 RUN cd /home/rstudio \
     && git clone --branch master https://github.com/shcaba/SS-DL-tool
+    
+WORKDIR /home/rstudio/SS-DL-tool
 
 # You will need to run the following in docker
 
