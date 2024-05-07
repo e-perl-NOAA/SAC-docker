@@ -52,10 +52,13 @@ COPY rstudio-prefs.json $HOME/.config/rstudio/rstudio-prefs.json
 RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 
 # Configure shiny server for bookmarks
-RUN sudo mkdir -p /var/shinylogs/shiny-server && \
-    mkdir -p /var/lib/shiny-server/bookmarks && \
-    chown shiny:shiny /var/shinylogs/shiny-server/ && \
-    chown shiny:shiny /var/lib/shiny-server/bookmarks/
+RUN mkdir -p /var/lib/shiny-server/bookmarks/
+
+# RUN mkdir -p /var/lib/shiny-server/bookmarks \
+#     && chown shiny:shiny /var/lib/shiny-server/bookmarks/ \
+#     && mkdir -p /var/log/shiny-server \
+#     && chown shiny:shiny /var/log/shiny-server \
+#     && exec shiny-server | tee -a /var/log/shiny-server.log
     
 RUN cd /home/rstudio \
     && git clone --branch master https://github.com/shcaba/SS-DL-tool
