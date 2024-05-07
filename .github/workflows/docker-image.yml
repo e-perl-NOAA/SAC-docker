@@ -3,6 +3,8 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+    paths: 
+      - '!README.md'
 #    tags:
 #      - "v*.*.*"
   pull_request:
