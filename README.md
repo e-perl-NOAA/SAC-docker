@@ -1,4 +1,4 @@
-# build-admb-ss3-docker
+# sac-docker
 
 ## This Dockerfile
 - Uses the [rocker/tidyverse image](https://rocker-project.org/images/versioned/rstudio.html)
@@ -8,12 +8,16 @@
   - {[r4ss](https://github.com/r4ss/r4ss)} - Also contains the get_ss3_exe() function to download the SS3 executable if the user would like to use this option; see the {r4ss} [documentation](https://r4ss.github.io/r4ss/articles/r4ss-intro-vignette.html) for more details
   - {[ss3sim](https://github.com/ss3sim/ss3sim)}
   - {[ss3diags](https://github.com/jabbamodel/ss3diags)}
+  - {[HandyCode](https://github.com/chantelwetzel-noaa/HandyCode)}
+  - {[nwfscDiag](https://github.com/nwfsc-assess/nwfscDiag)}
 - Installs R packages for plotting and parallel processing
   - {ggplot2}
   - {purrr}
   - {furrr}
   - {parallelly}
+  - {shiny}
   - etc. (see [install_r_packages.R](https://github.com/e-perl-NOAA/build-admb-ss3-docker/blob/main/install_r_packages.R) for the full list of installed packages)
+- Clones the [SAC Tool repository](https://github.com/shcaba/SS-DL-tool)
 
 ## How to use this Docker image
 ### Simple Usage
@@ -22,8 +26,8 @@ To use this Docker image locally you will need to have Docker Desktop installed 
 I suggest that you use the following workflow to pull and run this Dockerfile:
 - Run these commands in your terminal/command line:
   ```
-  docker pull egugliotti/build-admb-ss3-docker:main
-  docker run -it --rm -p 8787:8787 -e PASSWORD=a egugliotti/build-admb-ss3-docker:main
+  docker pull egugliotti/sac-docker:main
+  docker run -it --rm -p 8787:8787 -e PASSWORD=a egugliotti/sac-docker:main
   ```
 - Open up your preferred browser and type in http://localhost:8787
 - Enter the Username (rstudio unless configured otherwise by including `-e USERNAME=username` in the `docker run` command) and the Password (the password you set up in the `docker run` command, in this case, its a).
@@ -45,7 +49,7 @@ If you would like to mount local files onto the Docker container to have availab
    -e PASSWORD=a \
    --mount type=bind,source=$HOME/Documents/github_repos/ss3-test-models,target=/home/rstudio/github/ss3-test-models \
    --mount type=bind,source=$HOME/.gitconfig,target=/home/rstudio/.gitconfig \
-   egugliotti/build-admb-ss3-docker:main
+   egugliotti/sac-docker:main
   ```
 - source is where you have your files stored on your machine, target is where you will have your files stored on the container
 
@@ -58,7 +62,7 @@ If you would like to mount local files onto the Docker container to have availab
    -p 8787:8787 \
    -e PASSWORD=a \
    --mount type=bind,source=$HOME/workspaces/*insert repo name where codespace is opened here*/ss3-test-models,target=/home/rstudio/github/ss3-test-models \
-   egugliotti/build-admb-ss3-docker:main
+   egugliotti/sac-docker:main
   ```
 - A pop-up will appear in codespaces for you to click to open up your port to RStudio in a web browser
 - Other options are to go to PORTS right next to TERMINAL and click on the world icon next to the port you created OR to put http://localhost:8787 in your browser
@@ -79,7 +83,7 @@ If you would like to mount local files onto the Docker container to have availab
   Which will return a list of images running similarly to the following where the value of "NAMES" changes each time:
   ```
   CONTAINER ID   IMAGE                               COMMAND   CREATED          STATUS          PORTS                    NAMES
-  e7cde94f3768   e-gugliotti/build-admb-ss3-docker   "/init"   56 seconds ago   Up 55 seconds   0.0.0.0:8787->8787/tcp   gifted_meitner
+  e7cde94f3768   e-gugliotti/sac-docker   "/init"   56 seconds ago   Up 55 seconds   0.0.0.0:8787->8787/tcp   gifted_meitner
   ```
   Then run the following, replace `gifted_meitner` with the name returned from docker ps
   ```
