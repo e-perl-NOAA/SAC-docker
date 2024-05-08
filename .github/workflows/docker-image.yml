@@ -5,8 +5,7 @@ on:
     branches: [ "main" ]
     paths: 
       - '!README.md'
-#    tags:
-#      - "v*.*.*"
+      - '!.github/workflows/**'
   pull_request:
     branches: [ "main" ]
   workflow_dispatch: 
