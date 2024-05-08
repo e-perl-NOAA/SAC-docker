@@ -61,9 +61,8 @@ RUN mkdir -p /var/lib/shiny-server/bookmarks/
 #     && exec shiny-server | tee -a /var/log/shiny-server.log
     
 RUN cd /home/rstudio \
-    && git clone --branch master https://github.com/shcaba/SS-DL-tool
-    
-WORKDIR /home/rstudio/SS-DL-tool
+    && git clone --branch master https://github.com/shcaba/SS-DL-tool \
+    && echo "setwd(\"/home/rstudio/SS-DL-tool/\")" > ~/../home/rstudio/.Rprofile
 
 # You will need to run the following in docker
 
