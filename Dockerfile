@@ -53,16 +53,11 @@ RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 
 # Configure shiny server for bookmarks
 RUN mkdir -p /var/lib/shiny-server/bookmarks/
-
-# RUN mkdir -p /var/lib/shiny-server/bookmarks \
-#     && chown shiny:shiny /var/lib/shiny-server/bookmarks/ \
-#     && mkdir -p /var/log/shiny-server \
-#     && chown shiny:shiny /var/log/shiny-server \
-#     && exec shiny-server | tee -a /var/log/shiny-server.log
     
 RUN cd /home/rstudio \
-    && git clone --branch master https://github.com/shcaba/SS-DL-tool \
-    && echo "setwd(\"/home/rstudio/SS-DL-tool/\")" > ~/../home/rstudio/.Rprofile
+    && git clone --branch master https://github.com/shcaba/SS-DL-tool
+    
+RUN echo "setwd('/home/rstudio/SS-DL-tool')" > /home/rstudio/.Rprofile
 
 # You will need to run the following in docker
 
