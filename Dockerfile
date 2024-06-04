@@ -55,7 +55,7 @@ RUN chmod 777 $HOME/.config/rstudio/rstudio-prefs.json
 RUN mkdir -p /var/lib/shiny-server/bookmarks/
     
 RUN cd /home/rstudio \
-    && git clone --branch master https://github.com/shcaba/SS-DL-tool \
+    && git clone --branch remove_os_choice https://github.com/e-perl-NOAA/SS-DL-tool # --branch master https://github.com/shcaba/SS-DL-tool \
     && chown -R rstudio:rstudio /home/rstudio/*
     
 RUN echo "setwd('/home/rstudio/SS-DL-tool')" >> /home/rstudio/.Rprofile
