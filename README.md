@@ -23,7 +23,7 @@
 
 ## How to use this Docker image
 ### Simple Usage
-To use this Docker image locally you will need to have Docker Desktop installed on your computer (if you are with NMFS, this will likely involve IT). You can also use this image in Codespaces, although for that I recommend using the ss3 codespaces .devcontainer.json file rather than the docker image.
+To use this Docker image locally you will need to have Docker Desktop installed on your computer (if you are with NMFS, this will likely involve IT). You can also use this image in GitHub Codespaces.
 
 I suggest that you use the following workflow to pull and run this Dockerfile:
 - Run these commands in your terminal/command line:
