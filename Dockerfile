@@ -60,6 +60,8 @@ RUN cd /home/rstudio \
     
 RUN echo "setwd('/home/rstudio/SS-DL-tool')" >> /home/rstudio/.Rprofile
 
+RUN chown -R rstudio /home/rstudio/SS-DL-tool/*
+
 # You will need to run the following in docker
 
 # git clone --branch v3.30.22.1 https://github.com/nmfs-ost/ss3-test-models your computer, preferrably somewhere within you $HOME directory.
