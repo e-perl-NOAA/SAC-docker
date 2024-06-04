@@ -58,9 +58,9 @@ RUN cd /home/rstudio \
     && git clone --branch remove_os_choice https://github.com/e-perl-NOAA/SS-DL-tool # --branch master https://github.com/shcaba/SS-DL-tool \
     && chown -R rstudio:rstudio /home/rstudio/*
     
-RUN echo "setwd('/home/rstudio/SS-DL-tool')" >> /home/rstudio/.Rprofile
+RUN echo "setwd('/home/rstudio')" >> /home/rstudio/.Rprofile
 
-RUN chown -R rstudio /home/rstudio/SS-DL-tool/*
+RUN chown -R rstudio /home/rstudio/*
 
 # You will need to run the following in docker
 
