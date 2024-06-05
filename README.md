@@ -22,7 +22,7 @@
 - Clones the [SAC Tool repository](https://github.com/shcaba/SS-DL-tool) to the container and sets it as the working directory.
 
 ## How to use this Docker image
-### Simple Usage
+### Simple Usage (not saving files)
 To use this Docker image locally you will need to have Docker Desktop installed on your computer (if you are with NMFS, this will likely involve IT). You can also use this image in GitHub Codespaces.
 
 I suggest that you use the following workflow to pull and run this Dockerfile:
@@ -33,6 +33,13 @@ I suggest that you use the following workflow to pull and run this Dockerfile:
   ```
 - Open up your preferred browser and type in http://localhost:8787 **OR** go to *Ports* in the container (Docker or Codespaces) and there is a globe icon ( :globe_with_meridians: ) that you can click on (you may have to hover over a portion of where the port is displayed to see the icon) and it will bring up the port in a browser.
 - Enter the Username (`rstudio` unless configured otherwise by including `-e USERNAME=username` in the `docker run` command) and the Password (the password you set up in the `docker run` command, in this case, its `a`).
+
+**Without saving the work you did some way, either by committing to a GitHub repository or downloading the files, anything that you did will disappear**
+
+service sac-docker restart
+### Copying files to codespace
+docker cp 135950565ad8:/geeksforgeeks.txt ~/Desktop/geeksforgeeks.txt
+docker cp 135950565ad8:./* ~/Desktop/folder
 
 ### Usage with Mounting Files and .gitconfig file
 #### Cloning Example Files to Mount
@@ -71,12 +78,16 @@ If you would like to mount local files onto the Docker container to have availab
 
 ### Connect to GitHub (locally and in the container)
 **This step is essential if you would like to make/save changes in a GitHub repository.**
-- Open up a terminal and enter the following:
+- Open up a terminal in RStudio and enter the following:
   ```
   git config --global user.name "Your Name"
   git config --global user.email "yourname@your.com"
   git config --global credential.helper store
   ```
+- Go to your GitHub profile settings and scroll down to `<> Developer settings` > `Personal Access Tokens` > `Tokens (classic)`
+- Create a new Personal Access Token, give it a name that is descriptive, and the permissions you want it to have and click `Generate Token`
+- Save the token somewhere that you can find it again (I have a notes file with my Personal Access Tokens).
+- When you go to push your commits to GitHub, you will be asked for your username and password, the Personal Access Token string is that password
 
 ## Stop Image
 - Run the following commands
