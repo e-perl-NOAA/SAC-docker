@@ -1,6 +1,14 @@
 # The sac-docker Docker Image
-
-## This Dockerfile:
+### Table of Contents
+- [SAC Docker Image Contents](#sac-docker-image-contents)
+- [How to Use this Docker Image](#how-to-use-this-docker-image)
+  - [Simple Usage (not saving files)](#simple-usage-not-saving-files)
+  - [Save Work by Copying Scenarios and Bookmarks to a GitHub Repository](#save-work-by-copying-scenarios-and-bookmarks-to-a-github-repository)
+  - [Save Work by Creating a Fork of the SAC Tool and Pushing Changes to That](#save-work-by-creating-a-fork-of-the-sac-tool-and-pushing-changes-to-that)
+  - [Mount .gitconfig File when Starting Container (only suitable for Docker Desktop)](#mount-gitconfig-file-when-starting-container-only-suitable-for-docker-desktop)
+- [Connect to GitHub](#connect-to-github)
+- [Stop the Image](#stop-the-image)
+## SAC Docker Image Contents
 - Uses the [rocker/tidyverse image](https://rocker-project.org/images/versioned/rstudio.html)
 - ADMB & SS3 in $PATH
   - Builds ADMB from source and puts it in the $PATH
@@ -21,7 +29,7 @@
   - etc. (see [install_r_packages.R](https://github.com/e-perl-NOAA/build-admb-ss3-docker/blob/main/install_r_packages.R) for the full list of installed packages)
 - Clones the [SAC Tool repository](https://github.com/shcaba/SS-DL-tool) to the container and sets it as the working directory.
 
-## How to use this Docker image
+## How to Use this Docker Image
 ### Simple Usage (not saving files)
 To use this Docker image locally you will need to have Docker Desktop installed on your computer (if you are with NMFS, this will likely involve IT). You can also use this image in GitHub Codespaces.
 
@@ -36,70 +44,93 @@ I suggest that you use the following workflow to pull and run this Dockerfile:
 
 **Without saving the work you did some way, either by committing to a GitHub repository or downloading the files, anything that you did will disappear**
 
-service sac-docker restart
-### Copying files to codespace
-docker cp 135950565ad8:/geeksforgeeks.txt ~/Desktop/geeksforgeeks.txt
-docker cp 135950565ad8:./* ~/Desktop/folder
+### Save Work by Copying Scenarios and Bookmarks to a GitHub Repository
+- Create a GitHub repository that will house your scenarios and input bookmarks. All this repository needs to get you started is a README file with a short description.
+- Open up a Codespace in this repository or open up Docker Desktop.
+- Run these commands in your terminal/command line:
+  ```
+  docker pull egugliotti/sac-docker:main
+  docker run -it --rm -p 8787:8787 -e PASSWORD=a egugliotti/sac-docker:main
+  ```
+- Open up the Port and use the SAC tool to run a scenario.
+- Use the `docker ps` command to find the container ID (its the first thing in the list).
+- Go back to the Codespace or your terminal if using Docker desktop and enter the following commands:
+  ```
+  sudo docker cp container-id:/home/rstudio/SS-DL-tool/Scenarios/ /workspaces/YOUR-REPOSITORY-NAME
+  sudo docker cp container-id:/home/rstudio/SS-DL-tool/shiny_bookmarks /workspaces/YOUR-REPOSITORY-NAME
+  ```
+  *If using Docker Desktop you may not need the sudo command and instead of /workspaces/YOUR-REPOSITORY-NAME you would put where on your machine you would like the folder to be saved.*
+- Save the changes in your repository and you will be able to use them later.
+- You can copy these files back to the docker container with the reverse of the commands previously used, still doing `docker ps` first to make sure you have the correct container ID.
+  ```
+  sudo docker cp /workspaces/YOUR-REPOSITORY-NAME container-id:/home/rstudio/SS-DL-tool/Scenarios/
+  sudo docker cp /workspaces/YOUR-REPOSITORY-NAME container-id:/home/rstudio/SS-DL-tool/shiny_bookmarks
+  ```
+### Save Work by Creating a Fork of the SAC Tool and Pushing Changes to That
+- Create a Fork of the SAC Tool
+- Open up a Codespace in this repository or use Docker desktop to use Docker.
+- Run these commands in your terminal/command line:
+  ```
+  docker pull egugliotti/sac-docker:main
+  docker run -it --rm -p 8787:8787 -e PASSWORD=a egugliotti/sac-docker:main
+  ```
+- Open up the port.
+- Click `File` in the lefthand corner, then `New Project`.
+- Choose `Version Control` > `Git`.
+- Copy the repository URL (you can find this under the `<> Code` button `Local` option where it will say "Clone").
+- Give the project directory a name (e.g., SS-DL-tool-fork) and click `Create Project`.
+- Go to the .gitignore file and comment out the Scenarios and the shiny_bookmarks lines so that git tracks those files too.
+- Go through the [connect to GitHub](#connect-to-github) steps.
+- Run the SAC tool IN YOUR FORK (you can do this with your files and specifications or example bookmarked input and files).
+- Commit and push the changes to your fork of the SAC tool.
 
-### Usage with Mounting Files and .gitconfig file
-#### Cloning Example Files to Mount
-If you would like to mount local files onto the Docker container to have available for you there, the following is an example of how to do that using the [ss3-test-models GitHub repository](https://github.com/nmfs-ost/ss3-test-models).
-- Run `git clone --branch v3.30.22.1 https://github.com/nmfs-ost/ss3-test-models` in a terminal on your computer, preferrably somewhere within you $HOME directory.
-  - Go to your terminal and type in `$HOME`. The $HOME path will differ between windows, mac, and linux machines.
-  - For example, my $HOME directory on my windows machine is `/c/Users/elizabeth.gugliotti`. I have my ss3-test-models repository stored under `/c/Users/elizabeth.gugliotti/Documents/github_repos/stock-synthesis/ss3-test-models`. I could just write this as `$HOME/Documents/github_repos/stock-synthesis/ss3-test-models`.
-
-#### Mount Files Using Local Computer
-**This method also assumes that you have already gone through the [connect to GitHub](#connect-to-github) step on your local machine so that you have a .gitconfig file to mount on the container and automatically be able to connect to GitHub. This step is not necessary and you can always [connect to GitHub](#connect-to-github) once in the container.**
-- After cloning the ss3-test-models repository or using model files on your local machine (changing the location and name after $HOME/ to where your model files are), run the following in a terminal:
+### Mount .gitconfig File when Starting Container (only suitable for Docker Desktop)
+- Follow the [connect to GitHub](#connect-to-github) steps on your local machine (you can do these from a normal terminal) including the step to add your token to the .gitconfig file.
+- Now run the following whenever you run the docker container so that you don't have to re-enter your git credentials every time you run the container.
   ```
   docker run \
-   -it \
-   --rm \
-   -p 8787:8787 \
-   -e PASSWORD=a \
-   --mount type=bind,source=$HOME/Documents/github_repos/ss3-test-models,target=/home/rstudio/github/ss3-test-models \
-   --mount type=bind,source=$HOME/.gitconfig,target=/home/rstudio/.gitconfig \
-   egugliotti/sac-docker:main
+  -it \
+  --rm \
+  -p 8787:8787 \
+  -e PASSWORD=a \
+  --mount type=bind,source=$HOME/.gitconfig,target=/home/rstudio/.gitconfig \
+  egugliotti/sac-docker:main
   ```
-- `source` is where you have your files stored on your machine, `target` is where you will have your files stored on the container.
+  *`source` is where you have your file stored on your machine, `target` is where you will have your file stored on the container.*
+- **Please remember to add the .gitconfig file to your .gitignore file, you do not want this stored on your GitHub repository**
 
-#### Mount Files Using GitHub Codespaces
-- After cloning the ss3-test-models repository or after opening a codespace in a GitHub repository with your model files, run the following in the terminal on codespaces - you shouldn't have a .gitconfig file in a repository so if you want to configure settings in a codespace, you should do that after the container is running using the lines in the [Connect to GitHub](#connect-to-github) section.
-  ```
-  docker run \
-   -it \
-   --rm \
-   -p 8787:8787 \
-   -e PASSWORD=a \
-   --mount type=bind,source=$HOME/workspaces/*insert repo name where codespace is opened here*/ss3-test-models,target=/home/rstudio/github/ss3-test-models \
-   egugliotti/sac-docker:main
-  ```
-- A pop-up will appear in codespaces for you to click to open up your port to RStudio in a web browser **OR** go to **PORTS** right next to **TERMINAL** and click on the globe icon ( :globe_with_meridians: ) next to the port you created OR to put http://localhost:8787 in your browser.
-
-### Connect to GitHub (locally and in the container)
+## Connect to GitHub
 **This step is essential if you would like to make/save changes in a GitHub repository.**
 - Open up a terminal in RStudio and enter the following:
   ```
-  git config --global user.name "Your Name"
+  git config --global user.name "your-username"
   git config --global user.email "yourname@your.com"
   git config --global credential.helper store
   ```
-- Go to your GitHub profile settings and scroll down to `<> Developer settings` > `Personal Access Tokens` > `Tokens (classic)`
-- Create a new Personal Access Token, give it a name that is descriptive, and the permissions you want it to have and click `Generate Token`
+- Go to your GitHub profile settings and scroll down to `<> Developer settings` > `Personal Access Tokens` > `Tokens (classic)`.
+- Create a new Personal Access Token, give it a name that is descriptive, and the permissions you want it to have and click `Generate Token`.
 - Save the token somewhere that you can find it again (I have a notes file with my Personal Access Tokens).
-- When you go to push your commits to GitHub, you will be asked for your username and password, the Personal Access Token string is that password
+- When you go to push your commits to GitHub, you will be asked for your username and password, the Personal Access Token string is that password.
+- **You can add your token to your .gitconfig file but ONLY if you are using Docker Desktop/do not save you .gitconfig file in a repository.**
+  - Run git config --global --edit
+  - Add the following lines to your .gitconfig file:
+    ```
+    [github]
+  	    user = your-username
+        token = YOUR-TOKEN-STRING
+    ``` 
 
-## Stop Image
-- Run the following commands
+## Stop the Image
+- Run the following command:
   ```
   docker ps
   ```
-  Which will return a list of images running similarly to the following where the value of "NAMES" changes each time:
+  which will return a list of images running similarly to the following where the value of "NAMES" changes each time:
   ```
   CONTAINER ID   IMAGE                               COMMAND   CREATED          STATUS          PORTS                    NAMES
   e7cde94f3768   e-gugliotti/sac-docker   "/init"   56 seconds ago   Up 55 seconds   0.0.0.0:8787->8787/tcp   gifted_meitner
   ```
-  Then run the following, replace `gifted_meitner` with the name returned from docker ps
+- Run the following command, replacing `gifted_meitner` with the name returned from `docker ps`.
   ```
   docker stop gifted_meitner
   ```
