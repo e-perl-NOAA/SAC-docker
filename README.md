@@ -100,6 +100,7 @@ I suggest that you use the following workflow to pull and run this Dockerfile:
 - **Please remember to add the .gitconfig file to your .gitignore file, you do not want this stored on your GitHub repository**
 
 ## Connect to GitHub
+### Using git config
 **This step is essential if you would like to make/save changes in a GitHub repository.**
 - Open up a terminal in RStudio and enter the following:
   ```
@@ -119,7 +120,9 @@ I suggest that you use the following workflow to pull and run this Dockerfile:
   	    user = your-username
         token = YOUR-TOKEN-STRING
     ``` 
-
+### Using Credentials Manager
+- [Instructions on how to use the {usethis} package to manage GitHub credentials](https://gist.github.com/Z3tt/3dab3535007acf108391649766409421).
+  
 ## Stop the Image
 - Run the following command:
   ```
