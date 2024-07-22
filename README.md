@@ -13,7 +13,7 @@
 - ADMB & SS3 in $PATH
   - Builds ADMB from source and puts it in the $PATH
   - Builds [Stock Synthesis (SS3)](https://github.com/nmfs-ost/ss3-source-code) version 3.30.22.1 and puts in $PATH
-  - *These steps are not necessary since the SAC tool comes with SS3 executables contained within the repository but it does allow you to run SS3 and ADMB outside of the SAC tool if desired.*
+  - *These steps are not necessary since the SAC tool comes with SS3 executables contained within the repository, but it does allow you to run SS3 and ADMB outside of the SAC tool if desired.*
 - Installs R packages using associated with SS3 including:
   - {[r4ss](https://github.com/r4ss/r4ss)} - Also contains the get_ss3_exe() function to download the SS3 executable if the user would like to use this option; see the {r4ss} [documentation](https://r4ss.github.io/r4ss/articles/r4ss-intro-vignette.html) for more details
   - {[ss3sim](https://github.com/ss3sim/ss3sim)}
